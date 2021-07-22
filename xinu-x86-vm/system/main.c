@@ -1,5 +1,6 @@
 /* hello.c - main*/
 #include <xinu.h>
+void sndch(char);
 /* main - just say hello, then exit */ 
 void main(void)
 {
@@ -12,6 +13,6 @@ void sndch(char ch)
 	while(1)
 	{
 		putc(CONSOLE, ch);
-		
+
 	}
 }
