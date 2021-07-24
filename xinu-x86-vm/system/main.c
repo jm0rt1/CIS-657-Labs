@@ -50,11 +50,11 @@ void print_q_tab(void){
 int main(int argc, char **argv)
 {
 
-	resume(create(p1, 8192, 40, "1", 1, CONSOLE));
-	resume(create(p2, 8192, 30, "2", 1, CONSOLE));
-	resume(create(p3, 8192, 20, "3", 1, CONSOLE));
-	resume(create(p4, 8192, 20, "4", 1, CONSOLE));
-	resume(create(print_q_tab, 8192, 50, "print", 1, CONSOLE));
+	resume(create(p1, 8192, 40, "1", 0));
+	resume(create(p2, 8192, 30, "2", 0));
+	resume(create(p3, 8192, 20, "3", 0));
+	resume(create(p4, 8192, 20, "4", 0));
+	resume(create(print_q_tab, 8192, 50, "print", 0));
 
 
 	return OK;
