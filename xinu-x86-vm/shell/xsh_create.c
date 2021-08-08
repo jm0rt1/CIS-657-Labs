@@ -2,6 +2,7 @@
 #include <xinu.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 /*------------------------------------------------------------------------
 * xsh_create - shell command to create
 *------------------------------------------------------------------------
@@ -17,26 +18,18 @@ shellcmd xsh_create(int nargs, char *args[])
   }
   else if ( nargs == 2 ) {
     chprio = args[1];
-    ch = *chprio++;
+    //ch = *chprio++;
+    
     priority = 0;
-    while(ch != NULLCH) {
-      if ((ch <'0') || (ch > '9')) {
-        kprintf("%s: non-digit in priority\n", args[1]);
-        return 1;
-      }
-      priority = 10*priority + (ch - '0');
-      ch = *chprio++;
-    }
-    if (priority < (pri16)MINKEY) {
-      kprintf("%s: invalid prioirty\n", args[1]);
-      return 1;
-    }
+    priority = atoi(chprio);
+    //kprintf("prio = %d", priority);
   }
   else {
     kprintf("Too many arguments\n");
     return 1;
   }
   pid = create(runforever, 1024, priority, "Test", 0);
+  //kprintf("pid = %d\n", pid);
   resume(pid);
   return 0;
 }
