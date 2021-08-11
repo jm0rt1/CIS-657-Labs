@@ -11,12 +11,11 @@
 #define TEST_SIZE 2000
 #endif
 
-void producer(sid32 bufferFull, sid32 accessMutex);
-void consumer(sid32 bufferFull, sid32 accessMutex);
-void processSafeAddItem(int32 item, int32 index, sid32 accessMutex);
-int32 processSafeGetItem(int32 index, sid32 accessMutex);
+void producer(sid32 bufferFull, sid32 accessMutex, int * buffer);
+void consumer(sid32 bufferFull, sid32 accessMutex, int * buffer);
+void processSafeAddItem(int32 item, int32 index, sid32 accessMutex, int * buffer);
+int32 processSafeGetItem(int32 index, sid32 accessMutex, int * buffer);
 
-int32 sharedBuffer[BUFFER_SIZE];
 
 int main(int argc, char **argv)
 {
@@ -32,7 +31,7 @@ int main(int argc, char **argv)
 
 }
 
-void producer(sid32 bufferFull, sid32 accessMutex)
+void producer(sid32 bufferFull, sid32 accessMutex, int* buffer)
 {
 	int32 i;
 	int32 n = 0;
@@ -42,11 +41,11 @@ void producer(sid32 bufferFull, sid32 accessMutex)
 			n = 0;
 			wait(bufferFull);
 		}
-		processSafeAddItem(i,n, accessMutex);
+		processSafeAddItem(i,n, accessMutex, buffer);
 		n++;
 	}
 }
-void consumer(sid32 bufferFull, sid32 accessMutex)
+void consumer(sid32 bufferFull, sid32 accessMutex, int * buffer)
 {
 	int32 i;
 	int32 n = 0;
@@ -57,24 +56,24 @@ void consumer(sid32 bufferFull, sid32 accessMutex)
 			n = 0;
 			kprintf("\n");
 			signal(bufferFull);
-			continue;
+
 		}
-		kprintf("%d ", processSafeGetItem(n, accessMutex));
+		kprintf("%d ", processSafeGetItem(n, accessMutex, buffer));
 		n++;
 	}
 }
 
-void processSafeAddItem(int32 item, int32 index, sid32 accessMutex)
+void processSafeAddItem(int32 item, int32 index, sid32 accessMutex, int * buffer)
 {
 	wait(accessMutex);
-	sharedBuffer[index] = item;
+	buffer[index] = item;
 	signal(accessMutex);
 }
 
-int32 processSafeGetItem(int32 index, sid32 accessMutex)
+int32 processSafeGetItem(int32 index, sid32 accessMutex, int* buffer)
 {
 	wait(accessMutex);
-	int32 item = sharedBuffer[index];
+	int32 item = buffer[index];
 	signal(accessMutex);
 	return item;
 }
