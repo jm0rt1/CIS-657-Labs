@@ -23,8 +23,8 @@ int main(int argc, char **argv)
 	sid32 bufferFull = semcreate(0);
 	sid32 accessMutex = semcreate(1);
 
-	pid32 producerPid = resume(create(producer, 1024, 40, "producer", 3, bufferFull, accessMutex));
-	pid32 consumerPid = resume(create(consumer, 1024, 20, "consumer", 3, bufferFull, accessMutex));
+	pid32 producerPid = resume(create(producer, 1024, 40, "producer", 3, bufferFull, accessMutex, buffer));
+	pid32 consumerPid = resume(create(consumer, 1024, 20, "consumer", 3, bufferFull, accessMutex, buffer));
 	
 	sleep(1);
 
