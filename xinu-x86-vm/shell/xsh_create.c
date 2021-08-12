@@ -28,7 +28,7 @@ shellcmd xsh_create(int nargs, char *args[])
     kprintf("Too many arguments\n");
     return 1;
   }
-  pid = create(runforever, 1024, priority, "Test", 0);
+  pid = create(runforever, 1024, priority, "Test", 1, priority);
   //kprintf("pid = %d\n", pid);
   resume(pid);
   return 0;
