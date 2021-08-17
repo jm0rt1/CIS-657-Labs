@@ -320,3 +320,7 @@ extern	void	xdone(void);
 
 /* in file yield.c */
 extern	syscall	yield(void);
+
+extern void bob(sid32 Aarrived, sid32 Barrived);
+
+extern void alice(sid32 Aarrived, sid32 Barrived);
