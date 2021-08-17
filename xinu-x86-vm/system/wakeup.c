@@ -10,7 +10,7 @@ void	wakeup(void)
 {
 	/* Awaken all processes that have no more time to sleep */
 
-	while (nonempty(sleepq) && (firstid(sleepq) <= 0)) {
+	while (nonempty(sleepq) && (firstkey(sleepq) <= 0)) {
 		ready(dequeue(sleepq), RESCHED_NO);
 	}
 	

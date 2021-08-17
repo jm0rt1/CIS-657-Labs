@@ -16,5 +16,6 @@ extern void alice(sid32 Aarrived, sid32 Barrived)
     wait(Aarrived);
 
     kprintf("\n");
+    signaln(Barrived, 20);
 
 }

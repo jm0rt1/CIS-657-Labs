@@ -5,14 +5,11 @@
 #include<string.h>
 #include <stdlib.h>
 #include <clock.h>
-int monitor(sid32 Aarrived, sid32 Barrived);
+int controller(int mutNum);
 
 shellcmd xsh_sync(int nargs, char* args[])
 {
-    pid32 Apid, Bpid, monitorPid;
-    sid32 Aarrived = semcreate(0);
-    sid32 Barrived = semcreate(0);
-    sid32 done = semcreate(0);
+    pid32 controllerId;
 
     int seedArgument;
     if (nargs == 1)
@@ -28,21 +25,34 @@ shellcmd xsh_sync(int nargs, char* args[])
     } else {
         kprintf("Too many arguments\n");
     }
-
-    //generate a random number to determine which runs first
-    //Ideally this simulates the two processes already running in the OS for a long time
     int32 random = rand();
     int32 mutNum = random % 2;
+    //generate a random number to determine which runs first
+    //Ideally this simulates the two processes already running in the OS for a long time
+
 
     kprintf("random number is: %d, mutNum is %d\n");
 
+
+    controllerId = create(controller, 1024, 60, "controller", 1, mutNum);
+
+    resume(controllerId);
+
+
+
+}
+
+int controller(int mutNum)
+{
+    pid32 Apid, Bpid;
+    sid32 Aarrived = semcreate(0);
+    sid32 Barrived = semcreate(0);
+
     Apid = create(alice, 1024, 60, "alice", 2, Aarrived, Barrived);
     Bpid = create(bob, 1024, 60, "bob", 2, Aarrived, Barrived);
-    //monitorPid = create(monitor, 1024, 60, "bob", 1, done);
 
-    int upper = 1000;
-    int lower = 10;
-    int randomTime = (rand() % (upper - lower + 1)) + lower;
+
+
     if (mutNum == 0)
     {
         resume(Apid);
@@ -55,14 +65,8 @@ shellcmd xsh_sync(int nargs, char* args[])
         //sleepms(randomTime);
         resume(Apid);
     }
-    //resume(monitorPid);
-
-}
-
-int monitor(sid32 Aarrived, sid32 Barrived)
-{
     while (1){
-        if ((semcount(Aarrived) + semcount(Barrived)) == 2)
+        if ((semcount(Aarrived) + semcount(Barrived)) > 10)
         {
             return 0;
         }
