@@ -9,9 +9,10 @@
 
 shellcmd xsh_sync(int nargs, char* args[])
 {
-    pid32 Apid, Bpid;
+    pid32 Apid, Bpid, monitorPid;
     sid32 Aarrived = semcreate(0);
     sid32 Barrived = semcreate(0);
+    sid32 done = semcreate(0);
 
     int seedArgument;
     if (nargs == 1)
@@ -35,9 +36,10 @@ shellcmd xsh_sync(int nargs, char* args[])
 
     kprintf("random number is: %d, mutNum is %d\n");
 
-    Apid = create(alice, 1024, 20, "alice", 2);
-    Bpid = create(bob, 1024, 20, "bob", 2);
-
+    Apid = create(alice, 1024, 60, "alice", 2, Aarrived, Barrived);
+    Bpid = create(bob, 1024, 60, "bob", 2, Aarrived, Barrived);
+    monitorPid = create(monitor, 1024, 60, "bob", 1, done);
+    resume(monitorPid);
     if (mutNum == 0)
     {
         resume(Apid);
@@ -47,5 +49,16 @@ shellcmd xsh_sync(int nargs, char* args[])
     {
         resume(Bpid);
         resume(Apid);
+    }
+
+}
+
+int monitor(sid32 Aarrived, sid32 Barrived)
+{
+    while (1){
+        if ((semcount(Aarrived) + semcount(Barrived)) == 2)
+        {
+            return 0;
+        }
     }
 }

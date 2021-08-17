@@ -9,10 +9,11 @@ void bob(sid32 Aarrived, sid32 Barrived)
 
     signal(Aarrived);
     wait(Barrived);
-    kprintf("B1  ");
+
+    kprintf("B2  ");
 
     //rendezvous one more time for a new line character
     signal(Aarrived);
-
+    signal(Aarrived);
 
 }

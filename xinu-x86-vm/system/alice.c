@@ -12,9 +12,9 @@ extern void alice(sid32 Aarrived, sid32 Barrived)
 
     kprintf("A2  ");
 
-    //rendezvous one more time for a new line character
-    signal(Barrived);
+    //half-duplex rendezvous one more time for a new line character
     wait(Aarrived);
-    kprintf("\n")
+    kprintf("\n");
 
+    signal(Barrived);
 }
