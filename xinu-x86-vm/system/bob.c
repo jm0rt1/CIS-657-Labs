@@ -12,8 +12,9 @@ void bob(sid32 Aarrived, sid32 Barrived)
 
     kprintf("B2  ");
 
-    //rendezvous one more time for a new line character
     signal(Aarrived);
-    signal(Aarrived);
+    wait(Barrived);
+
+
 
 }

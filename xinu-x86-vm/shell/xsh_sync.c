@@ -5,7 +5,7 @@
 #include<string.h>
 #include <stdlib.h>
 #include <clock.h>
-
+int monitor(sid32 Aarrived, sid32 Barrived);
 
 shellcmd xsh_sync(int nargs, char* args[])
 {
@@ -38,18 +38,24 @@ shellcmd xsh_sync(int nargs, char* args[])
 
     Apid = create(alice, 1024, 60, "alice", 2, Aarrived, Barrived);
     Bpid = create(bob, 1024, 60, "bob", 2, Aarrived, Barrived);
-    monitorPid = create(monitor, 1024, 60, "bob", 1, done);
-    resume(monitorPid);
+    //monitorPid = create(monitor, 1024, 60, "bob", 1, done);
+
+    int upper = 1000;
+    int lower = 10;
+    int randomTime = (rand() % (upper - lower + 1)) + lower;
     if (mutNum == 0)
     {
         resume(Apid);
+        //sleepms(randomTime);
         resume(Bpid);
     }
     else
     {
         resume(Bpid);
+        //sleepms(randomTime);
         resume(Apid);
     }
+    //resume(monitorPid);
 
 }
 
