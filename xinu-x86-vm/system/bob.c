@@ -15,6 +15,6 @@ void bob(sid32 Aarrived, sid32 Barrived)
     signal(Aarrived);
     wait(Barrived);
 
-
+    signaln(Aarrived,20);
 
 }
