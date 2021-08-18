@@ -15,30 +15,24 @@ shellcmd xsh_sync(int nargs, char* args[])
     if (nargs == 1)
     {
         srand(clktime);
-        kprintf("Random number generator seeded with clock time\n");
 
     } else if (nargs == 2) 
     {
         seedArgument = atoi(args[1]);
         srand(seedArgument);
-        kprintf("Random number generator seeded with %d\n", seedArgument);
     } else {
         kprintf("Too many arguments\n");
-    }
-    int32 random = rand();
-    int32 mutNum = random % 2;
+        return 1;
+    }    
+    
     //generate a random number to determine which runs first
     //Ideally this simulates the two processes already running in the OS for a long time
-
-
-    kprintf("random number is: %d, mutNum is %d\n");
-
+    int32 random = rand();
+    int32 mutNum = random % 2;
 
     controllerId = create(controller, 1024, 60, "controller", 1, mutNum);
 
     resume(controllerId);
-
-
 
 }
 
@@ -56,13 +50,11 @@ int controller(int mutNum)
     if (mutNum == 0)
     {
         resume(Apid);
-        //sleepms(randomTime);
         resume(Bpid);
     }
     else
     {
         resume(Bpid);
-        //sleepms(randomTime);
         resume(Apid);
     }
     while (1){
