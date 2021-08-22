@@ -23,14 +23,21 @@ void	resched(void)		/* assumes interrupts are disabled	*/
 	ptold = &proctab[currpid];
 
 	if (ptold->prstate == PR_CURR) {  /* process remains running */
-		if (ptold->prprio > firstkey(readylist)) {
+
+		// -------  Override the pre-emptive scheduler.
+		if (currpid <= 1 && (ptold->prprio < firstkey(readylist))) {
 			return;
 		}
+		if (currpid>1) {
+			return;
+		}
+		// -------  Override the pre-emptive scheduler.
+
 
 		/* Old process will no longer remain current */
 
 		ptold->prstate = PR_READY;
-		insert(currpid, readylist, ptold->prprio);
+		enqueue(currpid, readylist);
 	}
 
 	/* Force context switch to highest priority ready process */
