@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "xinu.h": "c",
+        "conf.h": "c",
+        "sched.h": "c",
+        "stdio.h": "c",
+        "memory.h": "c",
+        "clock.h": "c",
+        "semaphore.h": "c"
+    }
+}

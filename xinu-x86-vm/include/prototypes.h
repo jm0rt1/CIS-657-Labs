@@ -321,4 +321,4 @@ extern	void	xdone(void);
 /* in file yield.c */
 extern	syscall	yield(void);
 
-extern void runforever(int32 p);
+extern void runforever();
